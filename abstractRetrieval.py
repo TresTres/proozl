@@ -10,6 +10,7 @@ def extract_abstracts():
     if response.status_code != 404:
         results = feedparser.parse(response.content)
         process_feed(results)
+    
 
 def process_feed(results=None):
     entries = results.entries

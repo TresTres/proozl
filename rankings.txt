@@ -1,0 +1,1 @@
+{'pn10': [('Hawking', 10), ('AGN', 6), ('Schwarzschild', 5), ('NAT', 5), ('BHMF', 5), ('Universe', 4), ('BTZ', 4), ('Skyrme', 4), ('Bardeen', 4), ('Eddington', 4)], 'root10': [('mass', 67), ('massive', 30), ('shadow', 30), ('spin', 22), ('galaxy', 21), ('entropy', 21), ('horizon', 20), ('solutions', 20), ('rotating', 18), ('Accretion', 18)]}
