@@ -1,6 +1,6 @@
 import nltk
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
 from collections import defaultdict
 
@@ -19,7 +19,6 @@ import json
 
 QUERY_WORDS=["black", "hole"]
 END_PUNCT=[".!?"]
-ps = PorterStemmer()
 
 
 def analyze_results(data):
@@ -34,7 +33,6 @@ def analyze_results(data):
     terms = clean['terms']
     roots = [root for root, words in terms.items() 
         for w in words]
-
     pndist = nltk.FreqDist(proper_nouns)
     pn_ten = pndist.most_common(10)
     #print(pn_ten)
@@ -52,6 +50,7 @@ def analyze_results(data):
 
 
 def clean_tokens(tokens):
+    ltzer = WordNetLemmatizer()
     sr = stopwords.words('english')
     clean_tokens = {}
     proper_nouns = []
@@ -60,8 +59,8 @@ def clean_tokens(tokens):
     for (word, pos) in token_it:
         if word.isalnum() and word.lower() not in sr:
 
-            stem = ps.stem(word)
-            if stem not in QUERY_WORDS:
+            stem = ltzer.lemmatize(word.lower())
+            if stem.lower() not in QUERY_WORDS:
                 if pos == 'NNP' or pos == 'NNPS':
                     proper_nouns.append(word)
                 else:
