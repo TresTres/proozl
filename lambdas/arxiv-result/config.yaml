@@ -2,7 +2,7 @@ region: us-east-2
 
 function_name: arxiv-result
 handler: lambda_function.lambda_handler
-description: arxiv 
+description: arxiv result retrieval
 runtime: python3.8
 role: proozl-role
 
