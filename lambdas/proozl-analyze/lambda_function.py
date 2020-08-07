@@ -1,9 +1,11 @@
 import boto3
+import json
 from boto3.dynamodb.conditions import Key
 from abstract_processing import rank_results
 
-TABLE_INSERT="TABLE_INSERT"
 
+DYNAMO_METHODS=["INSERT", "UPDATE"]
+GATEWAY_METHODS=["REQUEST"]
 
 def lambda_handler(event, context):
 
@@ -11,20 +13,55 @@ def lambda_handler(event, context):
     results_table = client.Table('proozl-arxiv-search-results')
     analysis_table = client.Table('proozl-result-analyses')
 
-    if event['method'] == TABLE_INSERT:
-        query = event['query']
-        analysis = analyze_results(event, results_table)
-        insert_analysis(query, analysis, analysis_table)
-        return {
-            'statusCode': 200,
-            'body': analysis
-        }
+    method = get_event_method(event)
+
+    if method in DYNAMO_METHODS:
+        for record in event["Records"]:
+            query = extract_query(record)
+            analysis = analyze_results(query, results_table)
+            if not analysis:
+                return {
+                    'statusCode': 200,
+                    'body': 'No results found.'
+                }
+            else:
+                insert_analysis(query, analysis, analysis_table)
+                return {
+                    'statusCode': 200,
+                    'body': json.dumps(analysis)
+                }
 
 
-def analyze_results(event, table):
+
+def get_event_method(event):
     '''
-    Given an event and a table containing query strings matched to a list of 
-    Arxiv search results, conducts analyses on the results that correspond to event['query']
+    Given an event, determines the event type.  Events can come from:
+    -DynamoDB stream
+    -Request to API Gateway
+    If the event comes from a DynamoDB stream, the event name is returned.
+    '''
+    if(event['Records']):
+        return event['Records'][0]['eventName']
+    else:
+        return 'REQUEST'
+
+
+def extract_query(record):
+    '''
+    Given a record from a Dynamo stream that updates the arxiv-result table, 
+    extracts the query_string query
+    '''
+    if record['dynamodb']:
+        keys = record['dynamodb']['Keys']
+        if keys['query_string']:
+            return keys['query_string']['S']
+    else:
+        return ''
+
+def analyze_results(query, table):
+    '''
+    Given a query and a table containing query strings matched to a list of 
+    Arxiv search results, conducts analyses on the results that correspond to the query
 
     If no results are in the table that match the query, nothing is returned.
     Otherwise, the following analyes are done:
@@ -32,8 +69,7 @@ def analyze_results(event, table):
         -...
     '''
     analysis = {}
-    query = event['query']
-    results = obtain_results(event, table)
+    results = obtain_results(query, table)
     if results:
         analysis = {
             'word_rankings': rank_results(results, query)
@@ -47,18 +83,21 @@ def insert_analysis(query, analysis, table):
     Given a query, an analysis dictionary, and a table that maps queries to analyses, 
     inserts the analysis into the table for the query if an entry does not yet exist.
     '''
+    table.put_item(
+        Item={
+            'query_string': query,
+            'analysis': analysis
+        }
+    )
     return
 
-def obtain_results(event, table):
+def obtain_results(query, table):
     """
-    Given an event and a table, where the event has the structure:
-    {
-        'query': The string to search for
-    }
-    1. Checks if the search results are already available in the table for 'query', and imeediately returns the results if they are 
+    Given a query and a table, where the event has the structure:
+    1. Checks if the search results are already available in the table for query, and imeediately returns the results if they are 
     2. If not, returns nothing
     """
-    cached_res = find_in_table(event['query'], table)
+    cached_res = find_in_table(query, table)
     if len(cached_res) == 0:
         #Did not find, return nothing
         return ''

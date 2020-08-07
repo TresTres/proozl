@@ -99,7 +99,7 @@ def get_pn10(proper_nouns):
     Given a list of proper nouns, obtains the top 10 frequently mentioned words
     """
     pndist = nltk.FreqDist(proper_nouns)
-    pn10 = pndist.most_common(10)
+    pn10 = [list(tpl) for tpl in pndist.most_common(10)]
     return pn10
 
 def get_rt10(terms):
@@ -114,10 +114,10 @@ def get_rt10(terms):
             "run": ["ran", "run"],
             "find": ["find", "found", "found", "finds"]
         }
-        would yield a result of ["computed", "apply", "find"]
+        would yield a result of [["apply", 5], ["compute", 4], ["find", 4]]
     """ 
     roots = [root for root, words in terms.items() 
         for w in words]
     rootdist = nltk.FreqDist(roots)
-    rt10 = [(terms[root][0].lower(), freq) for (root, freq) in rootdist.most_common(10)]
+    rt10 = [list((root.lower(), freq)) for (root, freq) in rootdist.most_common(10)]
     return rt10

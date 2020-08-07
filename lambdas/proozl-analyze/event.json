@@ -1,4 +1,14 @@
 {
-  "query": "Legendre", 
-  "method": "TABLE_INSERT"
+  "Records": [
+    {
+      "eventName": "INSERT",
+      "dynamodb": {
+        "Keys": {
+          "query_string": {
+            "S": "Hydroxychloroquine"
+          }
+        }
+      }
+    }
+  ]
 }

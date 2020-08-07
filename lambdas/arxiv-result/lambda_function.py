@@ -66,7 +66,7 @@ def fresh_search(event, table):
     """
     
     #Conduct Arxiv search
-    query = event['query']
+    query = lower(event['query'])
     start = event['start']
     max_results = event['max_results']
     params= {
@@ -93,5 +93,5 @@ def fresh_search(event, table):
 def find_in_table(query, table):
     """Searches the table for the query_string that matches query"""
     """Warning: does not take pagination into account yet"""
-    result = table.query(KeyConditionExpression=Key('query_string').eq(query))
+    result = table.query(KeyConditionExpression=Key('query_string').eq(lower(query)))
     return result['Items']
