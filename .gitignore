@@ -1,5 +1,9 @@
 env/*
+node_modules/*
 __pycache__/*
 *.lock
 *.pyc 
 python/
+.serverless/*
+.vscode/*
+package-lock*

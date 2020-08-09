@@ -1,0 +1,32 @@
+# serverless.yml
+
+service: proozl
+
+
+provider:
+    name: aws
+    runtime: python3.8
+    stage: 'dev'
+    region: 'us-east-2'
+
+package:
+    individually: true
+    exclude:
+        - test/**
+        - playground/**
+    
+    
+functions:
+    arxiv-result:
+        role: arn:aws:iam::555989344246:role/proozl-role
+        handler: lambdas/arxiv_result/lambda_function.lambda_handler
+        package:
+            include: lambdas/arxiv_result/**
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+    pythonRequirements:
+        dockerizePip: non-linux
+
