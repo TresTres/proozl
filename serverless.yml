@@ -2,7 +2,6 @@
 
 service: proozl
 
-
 provider:
     name: aws
     runtime: python3.8
@@ -10,23 +9,27 @@ provider:
     region: 'us-east-2'
 
 package:
-    individually: true
     exclude:
         - test/**
         - playground/**
+        - layers/**
     
-    
+layers:
+    lib:
+        path: layers/proozl-dep/
+        name: 'proozl-dep'
+        description:  Dependencies needed for proozl
+        compatibleRuntimes:
+            - python3.8
+            - python3.7
+        retain: true
+
 functions:
     arxiv-result:
         role: arn:aws:iam::555989344246:role/proozl-role
         handler: lambdas/arxiv_result/lambda_function.lambda_handler
-        package:
-            include: lambdas/arxiv_result/**
+        layers:
+            - { Ref: LibLambdaLayer }
 
 plugins:
-  - serverless-python-requirements
-
-custom:
-    pythonRequirements:
-        dockerizePip: non-linux
-
+    - serverless-plugin-layer-manager

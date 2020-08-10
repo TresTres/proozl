@@ -7,3 +7,4 @@ python/
 .serverless/*
 .vscode/*
 package-lock*
+*.zip
