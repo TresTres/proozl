@@ -30,6 +30,19 @@ def lambda_handler(event, context):
                     'statusCode': 200,
                     'body': json.dumps(analysis)
                 }
+    if method in GATEWAY_METHODS:
+        query = event['query_string']
+        analysis = analyze_results(query, results_table)
+        if not analysis:
+            return {
+                'statusCode': 200,
+                'body': 'No results found.'
+            }
+        else:
+            return {
+                'statusCode': 200,
+                'body': json.dumps(analysis)
+            }
 
 
 
@@ -40,7 +53,7 @@ def get_event_method(event):
     -Request to API Gateway
     If the event comes from a DynamoDB stream, the event name is returned.
     '''
-    if(event['Records']):
+    if 'Records' in event:
         return event['Records'][0]['eventName']
     else:
         return 'REQUEST'
@@ -51,7 +64,7 @@ def extract_query(record):
     Given a record from a Dynamo stream that updates the arxiv-result table, 
     extracts the query_string query
     '''
-    if record['dynamodb']:
+    if 'dynamodb' in record:
         keys = record['dynamodb']['Keys']
         if keys['query_string']:
             return keys['query_string']['S']
