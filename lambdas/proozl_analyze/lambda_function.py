@@ -31,7 +31,7 @@ def lambda_handler(event, context):
                     'body': json.dumps(analysis)
                 }
     if method in GATEWAY_METHODS:
-        query = event['query_string']
+        query = event['query']
         analysis = analyze_results(query, results_table)
         if not analysis:
             return {
