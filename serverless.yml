@@ -7,6 +7,7 @@ provider:
     runtime: python3.8
     stage: 'dev'
     region: 'us-east-2'
+    role: arn:aws:iam::555989344246:role/proozl-role
 
 package:
     exclude:
@@ -24,10 +25,14 @@ layers:
             - python3.7
         retain: true
 
+
 functions:
     arxiv-result:
-        role: arn:aws:iam::555989344246:role/proozl-role
         handler: lambdas/arxiv_result/lambda_function.lambda_handler
+        layers:
+            - { Ref: LibLambdaLayer }
+    proozl-analyze:
+        handler: lambdas/proozl_analyze/lambda_function.lambda_handler
         layers:
             - { Ref: LibLambdaLayer }
 

@@ -1,7 +1,7 @@
 import boto3
 import json
 from boto3.dynamodb.conditions import Key
-from abstract_processing import rank_results
+from lambdas.proozl_analyze.abstract_processing import rank_results
 
 
 DYNAMO_METHODS=["INSERT", "UPDATE"]
@@ -108,5 +108,5 @@ def obtain_results(query, table):
 def find_in_table(query, table):
     """Searches the table for the query_string that matches query"""
     """Warning: does not take pagination into account yet"""
-    result = table.query(KeyConditionExpression=Key('query_string').eq(query))
+    result = table.query(KeyConditionExpression=Key('query_string').eq(query.lower()))
     return result['Items']

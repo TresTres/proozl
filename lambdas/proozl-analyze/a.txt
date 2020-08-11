@@ -1,1 +1,0 @@
-{'statusCode': 200, 'body': '{"word_rankings": {"pn10": [["ACE2", 14], ["China", 2], ["December", 2], ["India", 2], ["RdRp", 2], ["ITML", 2], ["Boulware", 1], ["Cohen", 1], ["Fisher", 1], ["AgAu", 1]], "root10": [["drug", 31], ["study", 16], ["pandemic", 9], ["based", 8], ["clinical", 8], ["method", 8], ["potential", 8], ["protein", 8], ["viral", 8], ["treatment", 7]]}}'}

@@ -1,20 +1,18 @@
+from proozl_shared import nltk_setup
 import nltk
+
+NLTK_DATA_NEEDS= [
+    'corpora/stopwords',
+    'coprpora/wordnet',
+    'tokenizers/punkt',
+    'taggers/averaged_perceptron_tagger'
+]
+nltk_setup.get_nltk_data(NLTK_DATA_NEEDS)
+
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tag import pos_tag
 from collections import defaultdict
-
-try: 
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-
-try:
-    nltk.data.find('taggers/averaged_perceptron_tagger')
-except LookupError:
-    nltk.download('averaged_perceptron_tagger')
-
-
 
 def rank_results(results, query):
     """

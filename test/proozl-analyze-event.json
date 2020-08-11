@@ -5,7 +5,7 @@
       "dynamodb": {
         "Keys": {
           "query_string": {
-            "S": "Hydroxychloroquine"
+            "S": "hydroxychloroquine"
           }
         }
       }
