@@ -38,7 +38,7 @@ def tokenize_abstracts(entries):
     """
     result_tokens = []
     for entry in entries:
-        tokens = nltk.word_tokenize(entry['abstract'])
+        tokens = nltk.word_tokenize(entry['summary'])
         tokens = pos_tag(tokens)
         result_tokens.extend(tokens)
     return result_tokens

@@ -5,7 +5,10 @@
       "dynamodb": {
         "Keys": {
           "query_string": {
-            "S": "hydroxychloroquine"
+            "S": "black hole"
+          },
+          "page_start": {
+            "N": 60
           }
         }
       }

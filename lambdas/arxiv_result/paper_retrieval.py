@@ -16,18 +16,31 @@ def extract_papers(params):
 
 def process_feed(results):
     """ 
-    Transforms a feed of papers into a list of json objects with relevant attributes
-    of title, link, abstract, and authors
+    Transforms a feed of papers into a list of json objects with relevant attributes, hashed by the
+    id of the query
+    [id, title, links, summary, authors, arxiv_comment, tags, updated, published]
     """
+    attributes = [
+        'id',
+        'title', 
+        'links', 
+        'summary', 
+        'authors', 
+        'arxiv_comment',
+        'tags',
+        'updated',
+        'published'
+    ]
+
     entries = results.entries
     papers = []
     for entry in entries: 
         paper_entry = {
-            "title": entry['title'],
-            "link": entry['link'],
-            "abstract": entry['summary'],
-            "authors": entry['authors']
+            a: entry[a] for a in attributes if a in entry.keys()
         }
         papers.append(paper_entry)
-    return papers
+    return {
+        'id': results.feed.id,
+        'results': papers
+    }
      
