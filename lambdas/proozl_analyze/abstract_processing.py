@@ -1,4 +1,4 @@
-from proozl_shared import nltk_setup
+from proozlshared import nltk_setup
 import nltk
 
 NLTK_DATA_NEEDS= [

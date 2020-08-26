@@ -31,14 +31,17 @@ functions:
         handler: lambdas/arxiv_result/lambda_function.lambda_handler
         layers:
             - { Ref: LibLambdaLayer }
+        timeout: 180
     proozl-analyze:
         handler: lambdas/proozl_analyze/lambda_function.lambda_handler
         layers:
             - { Ref: LibLambdaLayer }
+        timeout: 120
     result-update: 
         handler: lambdas/result_update/lambda_function.lambda_handler
         layers:
             - { Ref: LibLambdaLayer }
+        timeout: 300
 
 plugins:
     - serverless-plugin-layer-manager

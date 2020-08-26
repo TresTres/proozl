@@ -9,3 +9,4 @@ python/
 package-lock*
 *.zip
 example
+output

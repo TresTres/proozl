@@ -3,7 +3,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 import uuid
 import json
-from lambdas.arxiv_result.paper_retrieval import extract_papers, process_feed
+from proozlshared.paper_retrieval import extract_papers, process_feed
 
 
 
@@ -79,7 +79,7 @@ def fresh_search(event, table):
     query = event['query'].lower()
     start = event['start']
     max_results = 60
-    params= {
+    params = {
         'search_query': query,
         'start': start,
         'max_results': max_results,
