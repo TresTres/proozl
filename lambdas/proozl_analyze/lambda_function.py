@@ -18,19 +18,29 @@ class DecimalIntEncoder(json.JSONEncoder):
 DYNAMO_METHODS=["INSERT", "UPDATE"]
 GATEWAY_METHODS=["REQUEST"]
 
+#leverage freezing
+RESULTS_TABLE = None
+ANALYSIS_TABLE = None
+
+
+
 def lambda_handler(event, context):
 
-    client = boto3.resource('dynamodb')
-    results_table = client.Table('proozl-arxiv-search-results')
-    analysis_table = client.Table('proozl-result-analyses')
+    global RESULTS_TABLE, ANALYSIS_TABLE
+    if RESULTS_TABLE is None:
+        client = boto3.resource('dynamodb')
+        RESULTS_TABLE =  boto3.resource('dynamodb').Table('proozl-arxiv-search-results')
+    if ANALYSIS_TABLE is None:
+        client = boto3.resource('dynamodb')
+        ANALYSIS_TABLE = client.Table('proozl-result-analyses')
 
     method = get_event_method(event)
 
     if method in DYNAMO_METHODS:
-        return dynamo_handler(event['Records'], results_table, analysis_table)
+        return dynamo_handler(event['Records'], RESULTS_TABLE, ANALYSIS_TABLE)
  
     if method in GATEWAY_METHODS:
-        return request_handler(event, analysis_table)
+        return request_handler(event, ANALYSIS_TABLE)
 
 
 def dynamo_handler(records, results_table, analysis_table):

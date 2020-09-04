@@ -50,7 +50,8 @@ def update_item(table, id, json_data):
         Key={'id': id},
         UpdateExpression="set \
             num_results = :num_results, \
-            results = :new_results",
+            results = :new_results, \
+            num_of_hits_wk = 0",
         ExpressionAttributeValues={
             ':num_results': len(json_data['results']),
             ':new_results': json_data['results']
@@ -64,7 +65,8 @@ def clear_item(table, id):
         Key={'id': id},
         UpdateExpression="set \
             num_results = :num_results, \
-            results = :new_results",
+            results = :new_results, \
+            num_of_hits_wk = 0",
         ExpressionAttributeValues={
             ':num_results': 0,
             ':new_results': []

@@ -7,13 +7,17 @@ from proozlshared.paper_retrieval import extract_papers, process_feed
 
 
 
+#leverage freezing
+TABLE = None
+
 
 def lambda_handler(event, context):
 
-    client = boto3.resource('dynamodb')
-    table = client.Table('proozl-arxiv-search-results')
+    global TABLE
+    if TABLE is None:
+        TABLE =  boto3.resource('dynamodb').Table('proozl-arxiv-search-results')
 
-    results = obtain_results(event, table)
+    results = obtain_results(event, TABLE)
     if not results:
         return {
             'statusCode': 200,
