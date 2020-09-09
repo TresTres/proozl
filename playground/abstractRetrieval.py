@@ -3,7 +3,7 @@ import feedparser
 import json
 
 
-ARXIV_API_URL="http://export.arxiv.org/api/query?search_query=all:black+hole&start=0&max_results=50"
+ARXIV_API_URL="http://export.arxiv.org/api/query?search_query=all:black+hole&start=0&max_results=60"
 
 def extract_abstracts():
     response = requests.get(ARXIV_API_URL, timeout=3)

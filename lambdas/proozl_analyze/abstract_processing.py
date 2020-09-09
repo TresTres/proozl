@@ -73,6 +73,7 @@ def clean_tokens(tokens, query):
 
     #iteration
     token_it = iter(tokens)
+    print(sr)
     for (word, pos) in token_it:
         if word.isalnum() and len(word) > 3 and (word.lower() not in sr):
             stem = ltzer.lemmatize(word.lower())

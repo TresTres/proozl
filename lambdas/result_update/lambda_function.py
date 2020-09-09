@@ -51,10 +51,11 @@ def update_item(table, id, json_data):
         UpdateExpression="set \
             num_results = :num_results, \
             results = :new_results, \
-            num_of_hits_wk = 0",
+            num_of_hits_wk = :weekly_reset",
         ExpressionAttributeValues={
             ':num_results': len(json_data['results']),
-            ':new_results': json_data['results']
+            ':new_results': json_data['results'],
+            ':weekly_reset': 0
         },
         ReturnValues="NONE"
     )

@@ -3,7 +3,7 @@
     {
       "eventName": "INSERT",
       "dynamodb": {
-        "Keys": {
+        "NewImage": {
           "query_string": {
             "S": "black hole"
           },
