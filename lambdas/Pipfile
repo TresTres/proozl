@@ -10,7 +10,7 @@ requests = "*"
 boto3 = "*"
 feedparser = "*"
 nltk = "*"
-proozlshared = {path = "./playground/proozlshared"}
+proozlshared = {path = "../playground/proozlshared"}
 
 [requires]
 python_version = "3.8"
